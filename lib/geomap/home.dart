@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:geolocatorapp/geomap/locationUpdate.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -15,8 +13,7 @@ class MapHome extends StatefulWidget {
 
 class _MapHomeState extends State<MapHome> {
   double lat, lng, zoom = 15; //map variables
-  Completer<GoogleMapController> _controller =
-      Completer(); //Map controller from google map flutter
+      GoogleMapController controls;
 
   @override
   void initState() {
@@ -35,22 +32,14 @@ class _MapHomeState extends State<MapHome> {
     });
   }
 
-  Future<void> trackLocation() async{
-    GoogleMapController controller = await _controller.future;
+  void trackLocation() {
     var location = new Location();
     location.onLocationChanged().listen((loc) {
       setState(() {
         lat = loc.latitude;
         lng = loc.longitude;
         zoom = 15;
-      });
-      controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(loc.latitude, loc.longitude),
-        zoom: 15,
-        bearing: 12,
-      )));
-      MapGoogle(lat, lng, zoom);
-      LocationUpdate(lat: lat, long: lng);
+      }); 
     });
   }
 
@@ -62,7 +51,7 @@ class _MapHomeState extends State<MapHome> {
       ),
       body: Center(
         child: lat != null
-            ? MapGoogle(lat, lng, zoom)
+            ? MapGoogle(lat, lng, zoom, controls)
             : CircularProgressIndicator(),
       ),
       bottomNavigationBar: LocationUpdate(lat: lat, long: lng),
