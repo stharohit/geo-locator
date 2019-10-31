@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:geolocatorapp/geomap/map.dart';
+import 'package:geolocatorapp/geomap/home.dart';
 
 void main() => runApp(MyApp());
 
